@@ -69,7 +69,7 @@ public class App {
                 break;
         }
 
-        System.out.println("Url of the image: " + url);
+        System.out.println("Url of the image: " + urlImg);
         return urlImg;
     }
 
