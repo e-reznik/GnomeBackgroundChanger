@@ -19,18 +19,14 @@ public class App {
     Map<String, String> map;
 
     public App(String source) throws IOException, URISyntaxException {
-        if (source == null) {
-            throw new IllegalArgumentException("Source required. Try nasa.");
-        } else {
-            map = new HashMap<>();
-            map.put("nasa", "https://apod.nasa.gov/apod/astropix.html");
-            map.put("natgeo", "https://www.nationalgeographic.com/photography/photo-of-the-day/");
+        map = new HashMap<>();
+        map.put("nasa", "https://apod.nasa.gov/apod/astropix.html");
+        map.put("natgeo", "https://www.nationalgeographic.com/photography/photo-of-the-day/");
 
-            String url = findUrl(source);
-            String urlImg = parse(source, url);
-            Path path = download(urlImg);
-            execScript(path);
-        }
+        String url = findUrl(source);
+        String urlImg = parse(source, url);
+        Path path = download(urlImg);
+        execScript(path);
     }
 
     /**
@@ -44,7 +40,7 @@ public class App {
         if (url != null) {
             return url;
         } else {
-            throw new NullPointerException("The source " + source + " doesn't exist. Please try another one.");
+            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + map.keySet().toString());
         }
     }
 
