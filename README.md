@@ -13,7 +13,7 @@ Currently supported sources are
 
 ## Example
 
-```console
+```java
 App backgroundChanger = new App();
 backgroundChanger.change("nasa");
 ```
