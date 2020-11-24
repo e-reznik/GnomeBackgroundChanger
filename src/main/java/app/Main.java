@@ -8,13 +8,11 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String[] args) {
-
+        App app = new App();
         if (args.length > 0) {
             try {
-                App app = new App(args[0]);
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (URISyntaxException ex) {
+                app.change(args[0]);
+            } catch (IOException | URISyntaxException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

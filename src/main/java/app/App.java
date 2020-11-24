@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
 import java.util.Map;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,17 +15,21 @@ import org.jsoup.nodes.Element;
 
 public class App {
 
-    Map<String, String> map;
+    Map<String, String> sources = iSources.sources;
 
-    public App(String source) throws IOException, URISyntaxException {
-        map = new HashMap<>();
-        map.put("nasa", "https://apod.nasa.gov/apod/astropix.html");
-        map.put("natgeo", "https://www.nationalgeographic.com/photography/photo-of-the-day/");
+    public App() {
+    }
 
+    public Map getSources() {
+        return sources;
+    }
+
+    public boolean change(String source) throws IOException, URISyntaxException {
         String url = findUrl(source);
         String urlImg = parse(source, url);
         Path path = download(urlImg);
         execScript(path);
+        return true;
     }
 
     /**
@@ -36,11 +39,11 @@ public class App {
      * @return
      */
     private String findUrl(String source) {
-        String url = map.get(source);
+        String url = sources.get(source);
         if (url != null) {
             return url;
         } else {
-            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + map.keySet().toString());
+            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + sources.keySet().toString());
         }
     }
 
