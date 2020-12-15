@@ -1,0 +1,2 @@
+nasa https://apod.nasa.gov/apod/astropix.html
+natgeo https://www.nationalgeographic.com/photography/photo-of-the-day/

@@ -7,7 +7,7 @@ public class Main {
 
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         App app = new App();
         if (args.length > 0) {
             try {

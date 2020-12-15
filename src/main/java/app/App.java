@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -17,6 +18,11 @@ import org.jsoup.nodes.Element;
 public class App {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
+    private final Map<String, String> sourceMap;
+
+    public App() throws IOException {
+        sourceMap = Sources.readSourceFile();
+    }
 
     public boolean change(String source) throws IOException {
         String url = findUrl(source);
@@ -33,11 +39,11 @@ public class App {
      * @return
      */
     private String findUrl(String source) {
-        String url = Sources.SOURCESMAP.get(source);
+        String url = sourceMap.get(source);
         if (url != null) {
             return url;
         } else {
-            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + Sources.SOURCESMAP.keySet().toString());
+            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + sourceMap.keySet().toString());
         }
     }
 
