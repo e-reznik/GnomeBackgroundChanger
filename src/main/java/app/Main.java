@@ -1,19 +1,19 @@
 package app;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class Main {
+
+    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
         App app = new App();
         if (args.length > 0) {
             try {
                 app.change(args[0]);
-            } catch (IOException | URISyntaxException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                LOGGER.error(ex);
             }
         } else {
             throw new IllegalArgumentException("Source required. Try nasa.");

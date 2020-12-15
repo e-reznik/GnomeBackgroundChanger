@@ -8,23 +8,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class App {
 
-    Map<String, String> sources = iSources.sources;
+    private static final Logger LOGGER = LogManager.getLogger(App.class);
 
-    public App() {
-    }
-
-    public Map getSources() {
-        return sources;
-    }
-
-    public boolean change(String source) throws IOException, URISyntaxException {
+    public boolean change(String source) throws IOException {
         String url = findUrl(source);
         String urlImg = parse(source, url);
         Path path = download(urlImg);
@@ -39,11 +33,11 @@ public class App {
      * @return
      */
     private String findUrl(String source) {
-        String url = sources.get(source);
+        String url = Sources.SOURCESMAP.get(source);
         if (url != null) {
             return url;
         } else {
-            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + sources.keySet().toString());
+            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + Sources.SOURCESMAP.keySet().toString());
         }
     }
 
@@ -70,9 +64,10 @@ public class App {
                 elementImg = doc.getElementsByAttributeValue("property", "og:image").first();
                 urlImg = elementImg.attributes().get("content");
                 break;
+            default:
         }
 
-        System.out.println("Url of the image: " + urlImg);
+        LOGGER.debug("Url of the image: {}", urlImg);
         return urlImg;
     }
 
@@ -90,7 +85,7 @@ public class App {
 
             Path imgAbs = path.toAbsolutePath();
 
-            System.out.println("Local path of the image: " + imgAbs);
+            LOGGER.debug("Local path of the image: {}", imgAbs);
             return imgAbs;
         }
     }
@@ -102,7 +97,7 @@ public class App {
      * @throws IOException
      * @throws URISyntaxException
      */
-    private void execScript(Path path) throws IOException, URISyntaxException {
+    private void execScript(Path path) throws IOException {
         String content = "gsettings set org.gnome.desktop.background picture-uri " + path;
         Runtime.getRuntime().exec(content);
     }
