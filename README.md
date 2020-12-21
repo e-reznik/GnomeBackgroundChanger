@@ -15,5 +15,5 @@ Currently supported sources are
 
 ```java
 App backgroundChanger = new App();
-backgroundChanger.change("nasa");
+backgroundChanger.changeBackground("nasa");
 ```
