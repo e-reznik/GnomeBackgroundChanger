@@ -11,7 +11,7 @@ public class Main {
         App app = new App();
         if (args.length > 0) {
             try {
-                app.change(args[0]);
+                app.changeBackground(args[0]);
             } catch (IOException ex) {
                 LOGGER.error(ex);
             }

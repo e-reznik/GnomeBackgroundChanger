@@ -18,17 +18,17 @@ import org.jsoup.nodes.Element;
 public class App {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
-    private final Map<String, String> sourceMap;
+    private final Map<String, String> availableSourcesMap;
 
     public App() throws IOException {
-        sourceMap = Sources.readSourceFile();
+        availableSourcesMap = Sources.readSourceFile();
     }
 
-    public boolean change(String source) throws IOException {
-        String url = findUrl(source);
-        String urlImg = parse(source, url);
-        Path path = download(urlImg);
-        execScript(path);
+    public boolean changeBackground(String selectedSource) throws IOException {
+        String urlOfSource = findUrlOfImage(selectedSource);
+        String urlOfImg = extractImageOnPage(selectedSource, urlOfSource);
+        Path path = downloadImage(urlOfImg);
+        executeScript(path);
         return true;
     }
 
@@ -38,30 +38,28 @@ public class App {
      * @param source
      * @return
      */
-    private String findUrl(String source) {
-        String url = sourceMap.get(source);
+    private String findUrlOfImage(String source) {
+        String url = availableSourcesMap.get(source);
         if (url != null) {
             return url;
         } else {
-            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + sourceMap.keySet().toString());
+            throw new NullPointerException("The source " + source + " doesn't exist. The available sources are: " + availableSourcesMap.keySet().toString());
         }
     }
 
     /**
-     * Finds the image on that page. There is only one present. The image is
-     * inside of an a-tag, so we need its parent. Take the value of its
-     * href-attribute. Than is the URL of the picture.
+     * Finds the image on that page.
      *
-     * @param url
+     * @param urlOfSource
      * @return
      * @throws IOException
      */
-    private String parse(String source, String url) throws IOException {
-        Document doc = Jsoup.connect(url).get();
+    private String extractImageOnPage(String selectedSource, String urlOfSource) throws IOException {
+        Document doc = Jsoup.connect(urlOfSource).get();
         Element elementImg = null;
         String urlImg = null;
 
-        switch (source) {
+        switch (selectedSource) {
             case "nasa":
                 elementImg = doc.getElementsByTag("img").first();
                 urlImg = elementImg.parent().absUrl("href");
@@ -84,8 +82,8 @@ public class App {
      * @return
      * @throws IOException
      */
-    private Path download(String url) throws IOException {
-        try (InputStream in = new URL(url).openStream()) {
+    private Path downloadImage(String urlOfImage) throws IOException {
+        try (InputStream in = new URL(urlOfImage).openStream()) {
             Path path = Paths.get("image.jpg");
             Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 
@@ -97,13 +95,13 @@ public class App {
     }
 
     /**
-     * Build and executes the script.
+     * Builds and executes the script.
      *
      * @param path
      * @throws IOException
      * @throws URISyntaxException
      */
-    private void execScript(Path path) throws IOException {
+    private void executeScript(Path path) throws IOException {
         String content = "gsettings set org.gnome.desktop.background picture-uri " + path;
         Runtime.getRuntime().exec(content);
     }
