@@ -1,4 +1,10 @@
-![Java CI with Maven](https://github.com/e-reznik/GnomeBackgroundChanger/workflows/Java%20CI%20with%20Maven/badge.svg)
+<p align="center">
+        <img src="https://github.com/e-reznik/GnomeBackgroundChanger/workflows/Java%20CI%20with%20Maven/badge.svg" />
+        <img src="https://img.shields.io/github/commit-activity/y/e-reznik/GnomeBackgroundChanger" />
+        <img src="https://img.shields.io/github/last-commit/e-reznik/GnomeBackgroundChanger" />
+</p>
+
+
 
 # Description
 Extracts the picture of the day from several sources and sets it as your Gnome background.
